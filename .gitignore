@@ -1,0 +1,45 @@
+# Binários e compilação
+bin/
+obj/
+out/
+
+# Arquivos do Visual Studio
+.vs/
+*.suo
+*.user
+*.cache
+*.log
+*.pdb
+
+# Dependências do NuGet
+packages/
+!packages/repositories.config
+
+# Configurações do usuário
+*.user
+*.rsuser
+*.sln.docstates
+
+# Logs e debug
+*.log
+*.tlog
+*.lastbuildstate
+
+# Diretórios de publicação
+publish/
+dist/
+
+# Configurações locais do Docker e Kubernetes
+.env
+.dockerignore
+k8s/
+
+# Arquivos gerados pelo Rider ou Resharper
+.idea/
+*.sln.iml
+
+# Arquivos de configuração sensíveis
+appsettings.json
+appsettings.*.json
+secrets.json
+
