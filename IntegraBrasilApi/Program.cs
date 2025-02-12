@@ -1,15 +1,24 @@
+using IntegraBrasilApi.Interfaces;
+using IntegraBrasilApi.Mappings;
+using IntegraBrasilApi.Rest;
+using IntegraBrasilApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<IAddressService, AddressService>();
+//builder.Services.AddSingleton<IBankService, BankService>();
+builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
+
+builder.Services.AddAutoMapper(typeof(AddressMapping));
+
+builder.Services.AddHttpClient<IBrasilApi, BrasilApiRest>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
