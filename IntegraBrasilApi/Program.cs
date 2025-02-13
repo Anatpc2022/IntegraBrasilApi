@@ -4,6 +4,7 @@ using IntegraBrasilApi.Interfaces;
 // Importa a classe de mapeamento do AutoMapper
 using IntegraBrasilApi.Mappings;
 
+
 // Importa a implementação da API externa
 using IntegraBrasilApi.Rest;
 
@@ -25,13 +26,17 @@ builder.Services.AddSwaggerGen();
 // Registra o serviço de endereço como um singleton (instância única durante toda a aplicação)
 builder.Services.AddSingleton<IAddressService, AddressService>();
 
-//builder.Services.AddSingleton<IBankService, BankService>();
+// Registra o serviço de banco como um singleton
+builder.Services.AddSingleton<IBankService, BankService>();
 
 // Registra o serviço da API externa como um singleton
 builder.Services.AddSingleton<IBrasilApi, BrasilApiRest>();
 
 // Configura o AutoMapper, especificando a classe de mapeamento
 builder.Services.AddAutoMapper(typeof(AddressMapping));
+
+// Configura o AutoMapper, especificando a classe de mapeamento
+builder.Services.AddAutoMapper(typeof(BankMapping));
 
 // Adiciona um cliente HTTP para a API externa, permitindo chamadas HTTP seguras
 builder.Services.AddHttpClient<IBrasilApi, BrasilApiRest>();

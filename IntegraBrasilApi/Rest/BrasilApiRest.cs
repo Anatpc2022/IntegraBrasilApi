@@ -68,16 +68,84 @@ namespace IntegraBrasilApi.Rest
             return response;
         }
 
-        // Método que deveria buscar todos os bancos, mas ainda não foi implementado
-        public Task<ResponseGeneric<List<BankModel>>> SearchAllBanks()
+        // Método assíncrono que busca todos os bancos na API externa
+        public async Task<ResponseGeneric<List<BankModel>>> SearchAllBanks()
         {
-            throw new NotImplementedException();
+            // Cria a requisição HTTP do tipo GET com a URL da API de buscar todos os bancos
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://brasilapi.com.br/api/banks/v1");
+
+            // Cria um objeto do tipo ResponseGeneric<List<BankModel>> para armazenar a resposta
+            var response = new ResponseGeneric<List<BankModel>>();
+
+            // Envia a requisição para a API externa e aguarda a resposta
+            var responseBrasilApi = await _client.SendAsync(request);
+
+            // Lê o conteúdo da resposta como uma string
+            var contentResp = await responseBrasilApi.Content.ReadAsStringAsync();
+
+            // Desserializa a string JSON recebida para um objeto do tipo List<BankModel>
+            var objResponse = JsonSerializer.Deserialize<List<BankModel>>(contentResp);
+
+            // Verifica se a requisição foi bem-sucedida (código HTTP 2xx)
+            if (responseBrasilApi.IsSuccessStatusCode)
+            {
+                // Armazena o código de status HTTP na resposta genérica
+                response.HttpCode = responseBrasilApi.StatusCode;
+
+                // Armazena o objeto desserializado na resposta
+                response.DataReturn = objResponse;
+            }
+            else
+            {
+                // Se houve erro, armazena o código de status HTTP
+                response.HttpCode = responseBrasilApi.StatusCode;
+
+                // Desserializa a resposta de erro para um objeto dinâmico (ExpandoObject)
+                response.ErrorReturn = JsonSerializer.Deserialize<ExpandoObject>(contentResp);
+            }
+
+            // Retorna o objeto de resposta genérica contendo os dados ou o erro
+            return response;
         }
 
-        // Método que deveria buscar um banco específico pelo código, mas ainda não foi implementado
-        public Task<ResponseGeneric<BankModel>> SearchBank(string bankCode)
+        // Método que busca um banco específico pelo código na api externa
+        public async Task<ResponseGeneric<BankModel>> SearchBank(string bankCode)
         {
-            throw new NotImplementedException();
+            // Cria a requisição HTTP do tipo GET com a URL da API de banco
+            var request = new HttpRequestMessage(HttpMethod.Get, $"https://brasilapi.com.br/api/banks/v1/{bankCode}");
+
+            // Cria um objeto do tipo ResponseGeneric<BankModel> para armazenar a resposta
+            var response = new ResponseGeneric<BankModel>();
+
+            // Envia a requisição para a API externa e aguarda a resposta
+            var responseBrasilApi = await _client.SendAsync(request);
+
+            // Lê o conteúdo da resposta como uma string
+            var contentResp = await responseBrasilApi.Content.ReadAsStringAsync();
+
+            // Desserializa a string JSON recebida para um objeto do tipo BankModel
+            var objResponse = JsonSerializer.Deserialize<BankModel>(contentResp);
+
+            // Verifica se a requisição foi bem-sucedida (código HTTP 2xx)
+            if (responseBrasilApi.IsSuccessStatusCode)
+            {
+                // Armazena o código de status HTTP na resposta genérica
+                response.HttpCode = responseBrasilApi.StatusCode;
+
+                // Armazena o objeto desserializado na resposta
+                response.DataReturn = objResponse;
+            }
+            else
+            {
+                // Se houve erro, armazena o código de status HTTP
+                response.HttpCode = responseBrasilApi.StatusCode;
+
+                // Desserializa a resposta de erro para um objeto dinâmico (ExpandoObject)
+                response.ErrorReturn = JsonSerializer.Deserialize<ExpandoObject>(contentResp);
+            }
+
+            // Retorna o objeto de resposta genérica contendo os dados ou o erro
+            return response;
         }
     }
 }
